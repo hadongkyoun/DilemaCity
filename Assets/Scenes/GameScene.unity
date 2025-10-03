@@ -276,7 +276,7 @@ Transform:
   m_GameObject: {fileID: 400898903}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.46648622, y: -5.3880243, z: -8.508027}
+  m_LocalPosition: {x: 5, y: 3, z: -5}
   m_LocalScale: {x: 10, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -445,8 +445,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   height: 15
   width: 15
-  gridSpaceSize: 1
-  gridCellPrefab: {fileID: 6819140867375473899, guid: 73a1774c1fcfb084b97dec179735a4d5,
+  gridSpaceSize: 5
+  gridCellPrefab: {fileID: 3959285608064541372, guid: ab34132470d8cb34f805e79ebb2ec986,
     type: 3}
 --- !u!1 &893022442
 GameObject:
@@ -484,8 +484,8 @@ Camera:
   m_GameObject: {fileID: 893022442}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.11992703, g: 0.26720467, b: 0.5188679, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -506,11 +506,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: -100000
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -534,13 +534,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 893022442}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30102664, y: 0.33086732, z: -0.1122499, w: 0.8873047}
-  m_LocalPosition: {x: -3.93, y: 5.16, z: -3.13}
+  m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
+  m_LocalPosition: {x: -3.154, y: 2.575, z: -3.154}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 37.48, y: 40.9, z: 0}
+  m_Father: {fileID: 1700906836}
+  m_LocalEulerAnglesHint: {x: 30, y: 45, z: 0}
 --- !u!114 &893022446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1472,7 +1472,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1634795595
 Transform:
   m_ObjectHideFlags: 0
@@ -1482,7 +1482,7 @@ Transform:
   m_GameObject: {fileID: 1634795594}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.46648622, y: 5.3880243, z: 8.508027}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1499,8 +1499,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1700906836}
+  - component: {fileID: 1700906837}
   m_Layer: 0
-  m_Name: CamFollowTarget
+  m_Name: Isometric Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1515,12 +1516,26 @@ Transform:
   m_GameObject: {fileID: 1700906835}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.0160499, y: -0.5417316, z: 0.90562177}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 893022445}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1700906837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700906835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 489d09fcd7ef369408eb7dc523831dc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camSpeed: 6
 --- !u!1 &1877365980
 GameObject:
   m_ObjectHideFlags: 0
@@ -1549,7 +1564,7 @@ Transform:
   m_GameObject: {fileID: 1877365980}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.46648622, y: -8.388024, z: -8.508027}
+  m_LocalPosition: {x: 5, y: 0, z: -5}
   m_LocalScale: {x: 10, y: 5, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1630,7 +1645,6 @@ MeshFilter:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 893022445}
   - {fileID: 1700906836}
   - {fileID: 1326005945}
   - {fileID: 1634795595}

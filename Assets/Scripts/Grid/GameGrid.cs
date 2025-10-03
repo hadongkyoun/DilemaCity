@@ -41,7 +41,7 @@ public class GameGrid : MonoBehaviour
         {
             for (int x = 0; x < width; x++)
             {
-                gameGrid[x, z] = Instantiate(gridCellPrefab, new Vector3(x * gridSpaceSize, -gridCellPrefab.transform.localScale.y/2f, z * gridSpaceSize), Quaternion.identity);
+                gameGrid[x, z] = Instantiate(gridCellPrefab, new Vector3(x * gridSpaceSize, -gridCellPrefab.transform.localScale.y/2f, z * gridSpaceSize), Quaternion.Euler(90,0,0));
                 if (gameGrid[x, z].TryGetComponent<GridCell>(out GridCell _gridCell))
                 {
                     // 그리드 좌표에 관한 정보만 (도로 및 건물설치를 위해)
