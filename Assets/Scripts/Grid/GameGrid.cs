@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class GameGrid : MonoBehaviour
 {
+    // Grid Size에 맞춰서 변경하기 위함
+    [SerializeField]
+    private GameObject GroundPrefab;
+
     // Size of game board of grid ( 10x10 개의 Cell 이 들어감 )
     [Header("Grid Size")]
     [SerializeField]
@@ -16,7 +20,7 @@ public class GameGrid : MonoBehaviour
     [Tooltip("그리드에 할당되는 Grid Cell Prefab 끼리의 간격이 조정 가능하다.")]
     [SerializeField]
     // Each Grid Size
-    private float gridSpaceSize = 5f;
+    private int gridSpaceSize = 5;
 
     [SerializeField]
     private GameObject gridCellPrefab;
@@ -27,6 +31,9 @@ public class GameGrid : MonoBehaviour
         // height * width 수 만큼 Cell 이 들어간다.
         gameGrid = new GameObject[height, width];
         StartCoroutine(CreateGrid());
+
+        GroundPrefab.transform.localScale = new Vector3(width, 1, height);
+        GroundPrefab.transform.position = new Vector3(width / 2, 0, height / 2);
     }
 
     private IEnumerator CreateGrid()
@@ -41,16 +48,16 @@ public class GameGrid : MonoBehaviour
         {
             for (int x = 0; x < width; x++)
             {
-                gameGrid[x, z] = Instantiate(gridCellPrefab, new Vector3(x * gridSpaceSize, -gridCellPrefab.transform.localScale.y/2f, z * gridSpaceSize), Quaternion.Euler(90,0,0));
+                gameGrid[x, z] = Instantiate(gridCellPrefab, new Vector3(x * gridSpaceSize, 0.501f, z * gridSpaceSize), Quaternion.Euler(90, 0, 0));
                 if (gameGrid[x, z].TryGetComponent<GridCell>(out GridCell _gridCell))
                 {
                     // 그리드 좌표에 관한 정보만 (도로 및 건물설치를 위해)
-                    _gridCell.SetPosition(x, z);
+                    _gridCell.SetPosition(x * gridSpaceSize, z * gridSpaceSize);
                 }
                 gameGrid[x, z].transform.parent = transform;
                 gameGrid[x, z].gameObject.name = $"Grid Space ( X: {x}, Z: {z} )";
 
-                yield return new WaitForSeconds(.005f);
+                yield return new WaitForSeconds(.00000000000001f);
             }
         }
     }
