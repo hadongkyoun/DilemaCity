@@ -347,6 +347,7 @@ GameObject:
   m_Component:
   - component: {fileID: 168163942}
   - component: {fileID: 168163941}
+  - component: {fileID: 168163943}
   m_Layer: 0
   m_Name: Building System
   m_TagString: Untagged
@@ -366,6 +367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c8b9a9d4fde05542a8edc7dcd43911d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previewSystem: {fileID: 168163943}
   BuildingPrefab: {fileID: 6031657891005060082, guid: d3042e753a1c1434cb6811496da85bbf,
     type: 3}
   roadManager: {fileID: 415231793}
@@ -387,6 +389,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &168163943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168163940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ee016c8ecc22440a0a10423c300729, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PreviewMaterialsPrefab: {fileID: 2100000, guid: 7e48e4a863cb90649945ba2e7e85ee60,
+    type: 2}
 --- !u!1 &415231792
 GameObject:
   m_ObjectHideFlags: 0

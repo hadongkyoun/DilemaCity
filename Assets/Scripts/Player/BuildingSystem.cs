@@ -6,6 +6,9 @@ using UnityEngine;
 public class BuildingSystem : MonoBehaviour
 {
     [SerializeField]
+    private PreviewSystem previewSystem;
+
+    [SerializeField]
     private GameObject BuildingPrefab;
     // 추 후 roadManager는 따로 RoadSystem으로 정리 예정
     [SerializeField]
@@ -18,12 +21,9 @@ public class BuildingSystem : MonoBehaviour
 
     GridCell gridCell = null;
 
-    private GameObject BuildingFrame = null;
-    private Vector3 buildingFramePos;
     void Start()
     {
         gameGrid = FindObjectOfType<GameGrid>();
-        buildingFramePos = new Vector3(-1, -1, -1);
     }
 
 
@@ -50,6 +50,16 @@ public class BuildingSystem : MonoBehaviour
                         roadManager.InstantiateRoad(gridCell.GetPosition());
                         gridCell.isOccupied = true;
                     }
+
+                }
+            }
+            else
+            {
+                if (activatedManagerId == 1)
+                {
+                    if (previewSystem.GetPreviewObject == null)
+                        previewSystem.StartShowingPlacementPreview(BuildingPrefab, gridCell.GetPosition());
+                    previewSystem.UpdatePosition(new Vector3(gridCell.GetPosition().x, 0.5f, gridCell.GetPosition().y), true);
                 }
             }
         }
@@ -79,5 +89,6 @@ public class BuildingSystem : MonoBehaviour
     public void SetManagerID(int _id)
     {
         activatedManagerId = _id;
+
     }
 }
