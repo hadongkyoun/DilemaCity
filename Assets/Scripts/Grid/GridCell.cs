@@ -24,4 +24,15 @@ public class GridCell : MonoBehaviour
     {
         return new Vector2Int(posX, posZ);
     }
+
+    public GridCell GetGridCellFromPosition(int x, int z)
+    {
+        if (posX == x && posZ == z)
+            return this;
+        else
+        {
+            Debug.Log("Error : There is no gridcell with given position.");
+            return null;
+        }
+    }
 }

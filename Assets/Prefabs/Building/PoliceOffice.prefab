@@ -111,6 +111,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3817062243808406728}
   - component: {fileID: 8027595830445907587}
+  - component: {fileID: 5752696664315975390}
   m_Layer: 0
   m_Name: PoliceOffice
   m_TagString: Untagged
@@ -147,6 +148,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37af43a69965c504d8a68840b9bbde43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingSize: {x: 7, y: 5}
+  buildingDirection: 1
+  canBuild: 0
+--- !u!65 &5752696664315975390
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6031657891005060082}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.75, y: 3, z: 3.75}
+  m_Center: {x: 3, y: 1, z: 2}
 --- !u!1 &7099701876841512156
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,7 +183,6 @@ GameObject:
   - component: {fileID: 5740833074410691410}
   - component: {fileID: 641185500552447500}
   - component: {fileID: 6412333873302365545}
-  - component: {fileID: 3184156707123034379}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -231,24 +255,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3184156707123034379
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7099701876841512156}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

@@ -13,6 +13,11 @@ public class PreviewSystem : MonoBehaviour
     private Material PreviewMaterialInstance;
 
     private bool prepared = false;
+
+    private GridCell[] cellsUnderBuilding;
+    private Vector2Int buildingSize;
+    private int buildingDirection;
+
     private void Start()
     {
         PreviewMaterialInstance = new Material(PreviewMaterialsPrefab);
@@ -22,6 +27,7 @@ public class PreviewSystem : MonoBehaviour
     {
         prepared = false;
         PreviewObject = Instantiate(_prefab, new Vector3(_position.x,0.5f, _position.y), Quaternion.identity);
+        PreparePreview(PreviewObject);
     }
 
     private void PreparePreview(GameObject _previewObject)
@@ -47,7 +53,7 @@ public class PreviewSystem : MonoBehaviour
     public void UpdatePosition(Vector3 _position, bool validity)
     {
         MovePreviewObject(_position);
-        //ApplyFeedback(validity);
+        ApplyFeedback(validity);
     }
 
     private void MovePreviewObject(Vector3 _position)

@@ -83,4 +83,17 @@ public class GameGrid : MonoBehaviour
 
         return new Vector3(x, 0, y);
     }
+
+    public GameObject GetGridCellFromPosition(int x, int z)
+    {
+        if (height <= x || width <= z)
+        {
+            return null;
+        }
+        if(x < 0 || z < 0)
+        {
+            return null;
+        }
+        return gameGrid[x, z];
+    }
 }
