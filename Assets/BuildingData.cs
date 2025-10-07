@@ -26,6 +26,7 @@ public class BuildingData : MonoBehaviour
                         GameObject cellObject;
                         cellObject = _gameGrid.GetGridCellFromPosition(startGridPosX + i, startGridPosZ + j);
 
+                        // 건물이 맵을 벗어난 경우
                         if(cellObject == null)
                         {
                             canBuild = false;
@@ -34,6 +35,7 @@ public class BuildingData : MonoBehaviour
                         }
                         else
                         {
+                            // 건물 영역에 설치 된 건물이 있는 경우
                             if (cellObject != null && cellObject.TryGetComponent<GridCell>(out GridCell _gridCell))
                             {
                                 if (_gridCell.isOccupied)

@@ -71,6 +71,7 @@ public class BuildingSystem : MonoBehaviour
             {
                 if (activatedManagerId == 1)
                 {
+                    // 건물 미리보기를 위한 오브젝트가 준비 돼 있지 않은 경우
                     if (previewSystem.GetPreviewObject == null)
                     {
                         previewSystem.StartShowingPlacementPreview(BuildingPrefab, gridCell.GetPosition());
@@ -81,6 +82,8 @@ public class BuildingSystem : MonoBehaviour
                         {
                             buildingData = previewSystem.GetPreviewObject.GetComponent<BuildingData>();
                         }
+
+                        // 마우스가 움직여 그리드가 변경 된 경우에만 한번 진행 ( lastGrid 를 이용 )
                         if (needToCheckCanBuild)
                         {
                             buildingData.DetermineCanBuild(gameGrid, gridCell.GetPosition().x, gridCell.GetPosition().y);
