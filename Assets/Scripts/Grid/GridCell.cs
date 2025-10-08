@@ -1,17 +1,40 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ObjectDataType
+{
+    RoadType,
+    BuildingType,
+}
+
+
+
 public class GridCell : MonoBehaviour
 {
+    public GridCell up;
+    public GridCell down;
+    public GridCell left;
+    public GridCell right;
+
+
     private int posX;
     private int posZ;
+
+    private ObjectDataType objectDataType = default;
 
     // 이 Grid Cell 안에 있는 GameObject
     public GameObject objectInThisGridSpace = null;
 
     // 이 Grid Cell이 GameObject를 가지고 있는가?
     public bool isOccupied = false;
+
+
+    // RoadType 인 경우 정보
+    private RoadType roadType;
+
+    // Building Type 인 경우 정보
 
     // Grid에서 이 Grid Cell의 Position 정보
     public void SetPosition(int x, int z)
@@ -34,5 +57,38 @@ public class GridCell : MonoBehaviour
             Debug.Log("Error : There is no gridcell with given position.");
             return null;
         }
+    }
+
+    public ObjectDataType ReturnObjectType()
+    {
+        if (objectDataType != default)
+        {
+            return objectDataType;
+
+        }
+        else
+        {
+            Debug.LogError("There is no assign with ObjectDataType on gridcell.cs");
+            return default;
+        }
+    }
+
+    public void DefineObjectDataType(ObjectDataType _type)
+    {
+        objectDataType = _type;
+    }
+
+    public void ResetGridCellInformation()
+    {
+        isOccupied = false;
+        objectInThisGridSpace = null;
+        //objectDataType = default;
+        //roadDirection = default;
+    }
+
+    public void ChangeRoadFromNearByData()
+    {
+        
+
     }
 }

@@ -23,8 +23,14 @@ public class BuildingData : MonoBehaviour
                 {
                     for (int j = 0; j < buildingSize.y; j++)
                     {
-                        GameObject cellObject;
-                        cellObject = _gameGrid.GetGridCellFromPosition(startGridPosX + i, startGridPosZ + j);
+                        GridCell cell = null;
+                        GameObject cellObject = null;
+                        cell = _gameGrid.GetGridCellFromPosition(startGridPosX + i, startGridPosZ + j);
+
+                        if(cell != null)
+                        {
+                            cellObject = cell.gameObject;
+                        }
 
                         // °Ç¹°ÀÌ ¸ÊÀ» ¹þ¾î³­ °æ¿ì
                         if(cellObject == null)
@@ -66,10 +72,12 @@ public class BuildingData : MonoBehaviour
             for (int j = 0; j < buildingSize.y; j++)
             {
                 GameObject cellObject;
-                cellObject = _gameGrid.GetGridCellFromPosition(startGridPosX + i, startGridPosZ + j);
+                cellObject = _gameGrid.GetGridCellFromPosition(startGridPosX + i, startGridPosZ + j).gameObject;
                 if (cellObject != null && cellObject.TryGetComponent<GridCell>(out GridCell _gridCell))
                 {
                     _gridCell.isOccupied = true;
+                    _gridCell.DefineObjectDataType(ObjectDataType.BuildingType);
+                    _gridCell.objectInThisGridSpace = cellObject;
                 }
             }
 

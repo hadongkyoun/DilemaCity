@@ -12,22 +12,19 @@ public class PreviewSystem : MonoBehaviour
     private Material PreviewMaterialsPrefab;
     private Material PreviewMaterialInstance;
 
-    private bool prepared = false;
 
-    private GridCell[] cellsUnderBuilding;
-    private Vector2Int buildingSize;
-    private int buildingDirection;
 
     private void Start()
     {
         PreviewMaterialInstance = new Material(PreviewMaterialsPrefab);
     }
 
-    public void StartShowingPlacementPreview(GameObject _prefab, Vector2Int _position)
+    public GameObject StartShowingPlacementPreview(GameObject _prefab, Vector2Int _position, Quaternion _rotation)
     {
-        prepared = false;
-        PreviewObject = Instantiate(_prefab, new Vector3(_position.x,0.5f, _position.y), Quaternion.identity);
+        PreviewObject = Instantiate(_prefab, new Vector3(_position.x, 0.5f, _position.y), _rotation);
         PreparePreview(PreviewObject);
+
+        return PreviewObject;
     }
 
     private void PreparePreview(GameObject _previewObject)
@@ -36,7 +33,7 @@ public class PreviewSystem : MonoBehaviour
         foreach (MeshRenderer renderer in renderers)
         {
             Material[] materials = renderer.materials;
-            for(int i =0; i<materials.Length; i++)
+            for (int i = 0; i < materials.Length; i++)
             {
                 materials[i] = PreviewMaterialInstance;
             }
@@ -47,7 +44,11 @@ public class PreviewSystem : MonoBehaviour
 
     public void StopShowingPreview()
     {
-        Destroy(PreviewObject);
+        if (PreviewObject != null)
+        {
+            ApplyFeedback(true);
+            Destroy(PreviewObject);
+        }
     }
 
     public void UpdatePosition(Vector3 _position, bool validity)

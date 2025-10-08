@@ -57,7 +57,25 @@ public class GameGrid : MonoBehaviour
                 gameGrid[x, z].transform.parent = transform;
                 gameGrid[x, z].gameObject.name = $"Grid Space ( X: {x}, Z: {z} )";
 
-                yield return new WaitForSeconds(.00000000000001f);
+                yield return null;
+            }
+        }
+
+
+        // 각 그리드 연결 코드 ( 모서리 지점은 예외처리로 하고 , 나머지 지점은 긴 코드로 실행 )
+        for (int z = 0; z < height; z++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                //if (gameGrid[x, z].TryGetComponent<GridCell>(out GridCell _gridCell))
+                //{
+                //    // 그리드 좌표에 관한 정보만 (도로 및 건물설치를 위해)
+                //    _gridCell.SetPosition(x * gridSpaceSize, z * gridSpaceSize);
+                //}
+                //gameGrid[x, z].transform.parent = transform;
+                //gameGrid[x, z].gameObject.name = $"Grid Space ( X: {x}, Z: {z} )";
+
+                //yield return null;
             }
         }
     }
@@ -84,7 +102,7 @@ public class GameGrid : MonoBehaviour
         return new Vector3(x, 0, y);
     }
 
-    public GameObject GetGridCellFromPosition(int x, int z)
+    public GridCell GetGridCellFromPosition(int x, int z)
     {
         if (height <= x || width <= z)
         {
@@ -94,6 +112,14 @@ public class GameGrid : MonoBehaviour
         {
             return null;
         }
-        return gameGrid[x, z];
+
+        if (gameGrid[x,z].TryGetComponent<GridCell>(out GridCell gridCell))
+        {
+            return gridCell;
+        }
+        else
+        {
+            return null;
+        }
     }
 }
