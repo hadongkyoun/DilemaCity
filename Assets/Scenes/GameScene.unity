@@ -514,6 +514,7 @@ GameObject:
   m_Component:
   - component: {fileID: 543626470}
   - component: {fileID: 543626471}
+  - component: {fileID: 543626472}
   m_Layer: 0
   m_Name: Road System
   m_TagString: Untagged
@@ -556,6 +557,19 @@ MonoBehaviour:
   - {fileID: 2056211624951461751, guid: 511f20f1045df424299b4ce608e861e8, type: 3}
   - {fileID: 2157175793013477452, guid: 1cf967eac9f84a64195e5ace746ecd7e, type: 3}
   - {fileID: 5939487771492430345, guid: 0d25459c721406e43b79a7ebe95940a0, type: 3}
+  roadGraph: {fileID: 543626472}
+--- !u!114 &543626472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543626469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d223796604a5eb547b72e77d1199ec1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &720681758
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,11 +13,6 @@ public enum ObjectDataType
 
 public class GridCell : MonoBehaviour
 {
-    public GridCell up;
-    public GridCell down;
-    public GridCell left;
-    public GridCell right;
-
 
     private int posX;
     private int posZ;
@@ -29,14 +24,6 @@ public class GridCell : MonoBehaviour
 
     // 이 Grid Cell이 GameObject를 가지고 있는가?
     public bool isOccupied = false;
-
-
-    // RoadType 인 경우 정보
-    private RoadType roadType;
-
-    // Building Type 인 경우 정보
-
-    // Grid에서 이 Grid Cell의 Position 정보
     public void SetPosition(int x, int z)
     {
         posX = x;
@@ -68,7 +55,6 @@ public class GridCell : MonoBehaviour
         }
         else
         {
-            Debug.LogError("There is no assign with ObjectDataType on gridcell.cs");
             return default;
         }
     }
@@ -82,13 +68,8 @@ public class GridCell : MonoBehaviour
     {
         isOccupied = false;
         objectInThisGridSpace = null;
-        //objectDataType = default;
+        objectDataType = default;
         //roadDirection = default;
     }
 
-    public void ChangeRoadFromNearByData()
-    {
-        
-
-    }
 }
