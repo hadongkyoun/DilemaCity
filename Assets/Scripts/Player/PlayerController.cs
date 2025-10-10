@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            return null;
+            return lastGridCell;
         }
     }
 
@@ -98,5 +98,10 @@ public class PlayerController : MonoBehaviour
                 toggleSystemID = -1;
                 break;
         }
+    }
+
+    public GridCell GetLastGrid()
+    {
+        return lastGridCell;
     }
 }

@@ -6,17 +6,10 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-public enum RoadType
-{
-    RoadEnd,
-    RoadStraight,
-    RoadCorner,
-    RoadThreeWay,
-    RoadFourWay,
-}
 
 public enum RoadDirection
 {
+    Default,
     Direction_XPlus,
     Direction_XMinus,
     Direction_ZPlus,
@@ -38,10 +31,9 @@ public class RoadSystem : MonoBehaviour
     [SerializeField]
     private GameObject RoadPrefab;
 
-    [Tooltip("RoadEnd: 0, RoadStraight, RoadCorner, RoadThreeWay, RoadFourWay")]
     [SerializeField]
+    [Tooltip("RoadEnd: 0, RoadStraight, RoadCorner, RoadThreeWay, RoadFourWay")]
     private GameObject[] RoadPrefabs;
-
 
     private PreviewSystem previewSystem;
 
@@ -51,7 +43,6 @@ public class RoadSystem : MonoBehaviour
     private GridCell currentGrid;
     private GridCell lastGrid;
 
-    private Stack<GridCell> roads = new Stack<GridCell>();
     private Dictionary<GridCell, RoadPreviewData> previewRoads = new Dictionary<GridCell, RoadPreviewData>();
 
     private GridCell[] nearByCells = new GridCell[4];
@@ -62,7 +53,7 @@ public class RoadSystem : MonoBehaviour
     private RoadGraph roadGraph;
 
 
-    private RoadDirection currentDragDirection;
+    private RoadDirection currentDragDirection = RoadDirection.Default;
     private void Start()
     {
         previewSystem = GetComponentInParent<PreviewSystem>();
@@ -81,7 +72,7 @@ public class RoadSystem : MonoBehaviour
             currentGrid = _gridCell;
             currentDragDirection = DragDirection();
         }
-        else
+        else if(Input.GetMouseButtonUp(0))
         {
             lastGrid = _gridCell;
             // 설치 확정
@@ -92,7 +83,7 @@ public class RoadSystem : MonoBehaviour
     public void StartCreatePreviewRoad(GameGrid _gameGrid)
     {
         gameGrid = _gameGrid;
-        if (currentGrid == null)
+        if (startGrid == null || currentGrid == null)
         {
             return;
         }
@@ -173,26 +164,27 @@ public class RoadSystem : MonoBehaviour
         //}
 
 
-        if (previewRoads.TryGetValue(coordinatedGridCell, out RoadPreviewData roadPreviewData))
+        if (previewRoads.Count > 0)
         {
-            if (!roadPreviewData.previewOn)
+            if (previewRoads.TryGetValue(coordinatedGridCell, out RoadPreviewData roadPreviewData) && roadPreviewData.previewOn)
+            {
+                return;
+            }
+            else
             {
                 previewRoad = previewSystem.StartShowingPlacementPreview(RoadPrefabs[(int)RoadType.RoadStraight], roadSample.roadPosition, roadSample.roadRotation);
                 roadSample.roadGameObject = previewRoad;
                 roadSample.previewOn = true;
                 previewRoads.Add(coordinatedGridCell, roadSample);
-                roads.Push(coordinatedGridCell);
             }
         }
         else
         {
-            previewRoad = previewSystem.StartShowingPlacementPreview(RoadPrefabs[(int)RoadType.RoadStraight], roadSample.roadPosition, roadSample.roadRotation);
+            previewRoad = previewSystem.StartShowingPlacementPreview(RoadPrefabs[(int)RoadType.RoadEnd], roadSample.roadPosition, roadSample.roadRotation);
             roadSample.roadGameObject = previewRoad;
             roadSample.previewOn = true;
             previewRoads.Add(coordinatedGridCell, roadSample);
-            roads.Push(coordinatedGridCell);
         }
-        Debug.Log(previewRoads.Count);
 
     }
     //// 도로의 방향을 최종 결정하는 함수 ( 추 후 ThreeWay에서 사용 될 예정 )
@@ -200,65 +192,15 @@ public class RoadSystem : MonoBehaviour
     //{
 
     //}
-
-    // 주변 도로에 몇개의 도로가 있는지 확인하는 함수
-    private int CheckRoadNumNearBy(RoadPreviewData _roadSample)
-    {
-        int roadNum = 0;
-        GridCell _gridCell = null;
-
-        _gridCell = gameGrid.GetGridCellFromPosition(_roadSample.roadPosition.x - 1, _roadSample.roadPosition.y);
-        if (_gridCell.isOccupied == false && _gridCell.objectInThisGridSpace && _gridCell.ReturnObjectType().Equals(ObjectDataType.RoadType))
-        {
-            if (gameGrid.GetGridCellFromPosition(_roadSample.roadPosition.x - 1, _roadSample.roadPosition.y).ReturnObjectType().Equals(ObjectDataType.RoadType))
-            {
-                roadNum++;
-            }
-        }
-
-        if (gameGrid.GetGridCellFromPosition(_roadSample.roadPosition.x + 1, _roadSample.roadPosition.y).objectInThisGridSpace)
-        {
-            if (gameGrid.GetGridCellFromPosition(_roadSample.roadPosition.x + 1, _roadSample.roadPosition.y).ReturnObjectType().Equals(ObjectDataType.RoadType))
-                roadNum++;
-        }
-
-        if (gameGrid.GetGridCellFromPosition(_roadSample.roadPosition.x, _roadSample.roadPosition.y - 1).objectInThisGridSpace)
-        {
-            if (gameGrid.GetGridCellFromPosition(_roadSample.roadPosition.x, _roadSample.roadPosition.y - 1).ReturnObjectType().Equals(ObjectDataType.RoadType))
-                roadNum++;
-        }
-
-        if (gameGrid.GetGridCellFromPosition(_roadSample.roadPosition.x, _roadSample.roadPosition.y + 1).objectInThisGridSpace)
-        {
-            if (gameGrid.GetGridCellFromPosition(_roadSample.roadPosition.x, _roadSample.roadPosition.y + 1).ReturnObjectType().Equals(ObjectDataType.RoadType))
-                roadNum++;
-        }
-
-        return roadNum;
-    }
     private void CreateRealRoad()
     {
-        int index = previewRoads.Count - 1;
-        while (previewRoads.Count > 0)
+        foreach(var roadData in previewRoads)
         {
-
-            GridCell gridFrameForRoad = roads.Pop();
-            if (previewRoads.TryGetValue(gridFrameForRoad, out RoadPreviewData _previewRoadData))
-            {
-
-                roadGraph.ConstructRoad(RoadPrefabs, gridFrameForRoad, _previewRoadData);
-
-                gridFrameForRoad.DefineObjectDataType(ObjectDataType.RoadType);
-                gridFrameForRoad.isOccupied = true;
-
-                _previewRoadData.previewOn = false;
-                Destroy(_previewRoadData.roadGameObject);
-                index--;
-                previewRoads.Remove(gridFrameForRoad);
-            }
-
+            roadGraph.ConstructRoad(roadData.Key, roadData.Value, currentDragDirection);
+            Destroy(roadData.Value.roadGameObject);
         }
 
+        roadGraph.UpdateRoadFromNearByRoads(RoadPrefabs, currentDragDirection);
         ResetRoadSystem();
     }
 
@@ -266,6 +208,10 @@ public class RoadSystem : MonoBehaviour
     // 드래그 하는 방향에 관련된 함수
     private RoadDirection DragDirection()
     {
+        if(startGrid == null)
+        {
+            return RoadDirection.Default;
+        }
         int xAmount = currentGrid.GetPosition().x - startGrid.GetPosition().x;
         int zAmount = currentGrid.GetPosition().y - startGrid.GetPosition().y;
 
@@ -324,10 +270,10 @@ public class RoadSystem : MonoBehaviour
 
     public void ResetRoadSystem()
     {
-        roads.Clear();
         previewRoads.Clear();
         startGrid = null;
         currentGrid = null;
         lastGrid = null;
+        //currentDragDirection = RoadDirection.Default;
     }
 }

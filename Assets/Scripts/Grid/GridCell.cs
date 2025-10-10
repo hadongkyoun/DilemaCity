@@ -5,6 +5,7 @@ using UnityEngine;
 
 public enum ObjectDataType
 {
+    Default,
     RoadType,
     BuildingType,
 }
@@ -17,7 +18,7 @@ public class GridCell : MonoBehaviour
     private int posX;
     private int posZ;
 
-    private ObjectDataType objectDataType = default;
+    private ObjectDataType objectDataType = ObjectDataType.Default;
 
     // 이 Grid Cell 안에 있는 GameObject
     public GameObject objectInThisGridSpace = null;
@@ -48,15 +49,7 @@ public class GridCell : MonoBehaviour
 
     public ObjectDataType ReturnObjectType()
     {
-        if (objectDataType != default)
-        {
-            return objectDataType;
-
-        }
-        else
-        {
-            return default;
-        }
+        return objectDataType;
     }
 
     public void DefineObjectDataType(ObjectDataType _type)
