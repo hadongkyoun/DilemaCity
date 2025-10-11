@@ -9,7 +9,7 @@ public class GameGrid : MonoBehaviour
     private GameObject GroundPrefab;
 
     // Size of game board of grid ( 10x10 개의 Cell 이 들어감 )
-    [Header("Grid Size")]
+    [Header("Grid Size : width and height must be same")]
     [SerializeField]
     private int height = 10;
     [SerializeField]
@@ -26,6 +26,7 @@ public class GameGrid : MonoBehaviour
     private GameObject gridCellPrefab;
     private GameObject[,] gameGrid;
 
+    private IsometricCameraHandler isometricCameraHandler;
     void Start()
     {
         // height * width 수 만큼 Cell 이 들어간다.
@@ -33,7 +34,16 @@ public class GameGrid : MonoBehaviour
         StartCoroutine(CreateGrid());
 
         GroundPrefab.transform.localScale = new Vector3(width, 1, height);
-        GroundPrefab.transform.position = new Vector3(width / 2, 0, height / 2);
+        if (width % 2 == 1)
+        {
+            GroundPrefab.transform.position = new Vector3(width / 2, 0, height / 2);
+        }
+        else
+        {
+            GroundPrefab.transform.position = new Vector3(width / 2 -0.5f, 0, height / 2 - 0.5f);
+        }
+
+        Camera.main.GetComponentInParent<IsometricCameraHandler>().SetLimitHandlerSizeAndStartPosition(new Vector2(-20, width + 20), new Vector2(-20, height + 20), new Vector3(width / 2, 0, height / 2));
     }
 
     private IEnumerator CreateGrid()

@@ -28,12 +28,11 @@ public struct RoadPreviewData
 // 추 후 roadManager는 따로 RoadSystem으로 정리 예정
 public class RoadSystem : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject RoadPrefab;
 
     [SerializeField]
     [Tooltip("RoadEnd: 0, RoadStraight, RoadCorner, RoadThreeWay, RoadFourWay")]
     private GameObject[] RoadPrefabs;
+    public GameObject[] GetRoadPrefabs { get { return RoadPrefabs; } }
 
     private PreviewSystem previewSystem;
 
@@ -54,6 +53,7 @@ public class RoadSystem : MonoBehaviour
 
 
     private RoadDirection currentDragDirection = RoadDirection.Default;
+    public RoadDirection GetCurrentDragDirection { get { return currentDragDirection; } }
     private void Start()
     {
         previewSystem = GetComponentInParent<PreviewSystem>();
@@ -172,7 +172,13 @@ public class RoadSystem : MonoBehaviour
             }
             else
             {
-                previewRoad = previewSystem.StartShowingPlacementPreview(RoadPrefabs[(int)RoadType.RoadStraight], roadSample.roadPosition, roadSample.roadRotation);
+                Quaternion rotation = Quaternion.identity;
+
+                if(currentDragDirection == RoadDirection.Direction_ZMinus || currentDragDirection == RoadDirection.Direction_XPlus)
+                {
+                    rotation = Quaternion.Euler(0, 180, 0);
+                }
+                previewRoad = previewSystem.StartShowingPlacementPreview(RoadPrefabs[(int)RoadType.RoadStraight], roadSample.roadPosition, roadSample.roadRotation * rotation);
                 roadSample.roadGameObject = previewRoad;
                 roadSample.previewOn = true;
                 previewRoads.Add(coordinatedGridCell, roadSample);
@@ -180,7 +186,13 @@ public class RoadSystem : MonoBehaviour
         }
         else
         {
-            previewRoad = previewSystem.StartShowingPlacementPreview(RoadPrefabs[(int)RoadType.RoadEnd], roadSample.roadPosition, roadSample.roadRotation);
+            Quaternion rotation = Quaternion.identity;
+
+            if (currentDragDirection == RoadDirection.Direction_ZMinus || currentDragDirection == RoadDirection.Direction_XPlus)
+            {
+                rotation = Quaternion.Euler(0, 180, 0);
+            }
+            previewRoad = previewSystem.StartShowingPlacementPreview(RoadPrefabs[(int)RoadType.RoadEnd], roadSample.roadPosition, roadSample.roadRotation * rotation);
             roadSample.roadGameObject = previewRoad;
             roadSample.previewOn = true;
             previewRoads.Add(coordinatedGridCell, roadSample);

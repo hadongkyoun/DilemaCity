@@ -22,10 +22,12 @@ public class RoadGraph : MonoBehaviour
     private List<RoadGraphVertex> startToLastCellList = new List<RoadGraphVertex>();
 
 
+    RoadGraphVertex roadGraphVertex = new RoadGraphVertex();
     private GameGrid gameGrid;
     private void Start()
     {
         gameGrid = FindObjectOfType<GameGrid>();
+
     }
     private class RoadGraphVertex
     {
@@ -45,15 +47,23 @@ public class RoadGraph : MonoBehaviour
     }
 
 
-    public void SetRoadGraphNode(GridCell _gridCell, Vector2Int middleCellPosition, RoadDirection roadDrageDirection)
+    public void SetRoadGraphNode(GridCell _gridCell, Vector2Int middleCellPosition, RoadDirection roadDragDirection)
     {
-        // 그래프 버텍스 생성 
-        RoadGraphVertex roadGraphVertex = new RoadGraphVertex();
+        if(roadList.TryGetValue(_gridCell, out RoadGraphVertex value))
+        {
+            roadGraphVertex = value;
+        }
+        else
+        {
+            roadGraphVertex = new RoadGraphVertex();
         roadGraphVertex.node = _gridCell;
         roadGraphVertex.nodePosition = middleCellPosition;
+        }
+        // 그래프 버텍스 생성 
+        
 
-        startToLastCellList.Add(roadGraphVertex);
-        BasicConnectVertex(_gridCell, roadGraphVertex, middleCellPosition, roadDrageDirection);
+
+
 
         if (roadList.ContainsKey(_gridCell) == false)
         {
@@ -61,113 +71,97 @@ public class RoadGraph : MonoBehaviour
         }
         else
         {
-            ConnectEdge(_gridCell, roadGraphVertex, middleCellPosition, roadDrageDirection);
+            ConnectEdge(_gridCell, roadGraphVertex, middleCellPosition, roadDragDirection);
             Debug.Log("Connected!!!");
         }
+
+        startToLastCellList.Add(roadGraphVertex);
+        BasicConnectVertex(_gridCell, roadGraphVertex, middleCellPosition, roadDragDirection);
+        roadGraphVertex = null;
     }
 
-    private void BasicConnectVertex(GridCell _gridCell, RoadGraphVertex roadGraphVertex, Vector2Int middleCellPosition, RoadDirection roadDrageDirection)
+    private void BasicConnectVertex(GridCell _gridCell, RoadGraphVertex roadGraphVertex, Vector2Int middleCellPosition, RoadDirection roadDragDirection)
     {
-        if (roadDrageDirection == RoadDirection.Direction_XPlus)
-        {
-            
-            GridCell cellFrame = gameGrid.GetGridCellFromPosition(middleCellPosition.x - 1, middleCellPosition.y);
-            if (cellFrame != null)
-            {
-                foreach(RoadGraphVertex vertexBefore in startToLastCellList)
-                {
-                    if(vertexBefore.node == cellFrame)
-                    {
-                        Debug.Log(cellFrame.name);
-                        vertexBefore.edge.right = roadGraphVertex;
-                        roadGraphVertex.edge.left = vertexBefore;
+        GridCell cellFrame = null;
 
-                        break;
-                    }
+        if (roadDragDirection == RoadDirection.Direction_XPlus)
+        {
+            cellFrame = gameGrid.GetGridCellFromPosition(middleCellPosition.x - 1, middleCellPosition.y);
+
+            foreach (RoadGraphVertex vertex in startToLastCellList)
+            {
+                if (vertex.node == cellFrame)
+                {
+                    roadGraphVertex.edge.left = vertex;
+                    vertex.edge.right = roadGraphVertex;
                 }
             }
         }
-        else if (roadDrageDirection == RoadDirection.Direction_XMinus)
+        else if (roadDragDirection == RoadDirection.Direction_XMinus)
         {
-            GridCell cellFrame = gameGrid.GetGridCellFromPosition(middleCellPosition.x + 1, middleCellPosition.y);
-            if (cellFrame != null)
+            cellFrame = gameGrid.GetGridCellFromPosition(middleCellPosition.x + 1, middleCellPosition.y);
+
+            foreach (RoadGraphVertex vertex in startToLastCellList)
             {
-                foreach (RoadGraphVertex vertexBefore in startToLastCellList)
+                if (vertex.node == cellFrame)
                 {
-                    if (vertexBefore.node == cellFrame)
-                    {
-                        vertexBefore.edge.left = roadGraphVertex;
-                        roadGraphVertex.edge.right = vertexBefore;
-                        break;
-                    }
+                    roadGraphVertex.edge.right = vertex;
+                    vertex.edge.left = roadGraphVertex;
                 }
             }
         }
-        else if (roadDrageDirection == RoadDirection.Direction_ZPlus)
+
+        else if (roadDragDirection == RoadDirection.Direction_ZPlus)
         {
-            GridCell cellFrame = gameGrid.GetGridCellFromPosition(middleCellPosition.x, middleCellPosition.y - 1);
-            if (cellFrame != null)
+
+            cellFrame = gameGrid.GetGridCellFromPosition(middleCellPosition.x, middleCellPosition.y - 1);
+            foreach (RoadGraphVertex vertex in startToLastCellList)
             {
-                foreach (RoadGraphVertex vertexBefore in startToLastCellList)
+                if (vertex.node == cellFrame)
                 {
-                    if (vertexBefore.node == cellFrame)
-                    {
-                        vertexBefore.edge.up = roadGraphVertex;
-                        roadGraphVertex.edge.down = vertexBefore;
-                        break;
-                    }
+                    roadGraphVertex.edge.down = vertex;
+                    vertex.edge.up = roadGraphVertex;
                 }
             }
+
+
         }
-        else if (roadDrageDirection == RoadDirection.Direction_ZMinus)
+        else if (roadDragDirection == RoadDirection.Direction_ZMinus)
         {
-            GridCell cellFrame = gameGrid.GetGridCellFromPosition(middleCellPosition.x, middleCellPosition.y + 1);
-            if (cellFrame != null)
+            cellFrame = gameGrid.GetGridCellFromPosition(middleCellPosition.x, middleCellPosition.y + 1);
+            foreach (RoadGraphVertex vertex in startToLastCellList)
             {
-                foreach (RoadGraphVertex vertexBefore in startToLastCellList)
+                if (vertex.node == cellFrame)
                 {
-                    if (vertexBefore.node == cellFrame)
-                    {
-                        vertexBefore.edge.down = roadGraphVertex;
-                        roadGraphVertex.edge.up = vertexBefore;
-                        Debug.Log("Before : " + vertexBefore.edge.down.node.name + ", Current : " + roadGraphVertex.edge.up.node.name);
-                        break;
-                    }
+                    roadGraphVertex.edge.up = vertex;
+                    vertex.edge.down = roadGraphVertex;
                 }
             }
         }
     }
 
-    private void ConnectEdge(GridCell _gridCell, RoadGraphVertex roadGraphVertex, Vector2Int middleCellPosition, RoadDirection roadDrageDirection)
+    private void ConnectEdge(GridCell _gridCell, RoadGraphVertex roadGraphVertex, Vector2Int middleCellPosition, RoadDirection roadDragDirection)
     {
-
-        
 
         // 충돌 된 노드 지
 
-        if (roadDrageDirection == RoadDirection.Direction_ZMinus || roadDrageDirection == RoadDirection.Direction_ZPlus)
+        if (roadList.TryGetValue(_gridCell, out RoadGraphVertex _roadGraphVertex))
         {
-            if (roadList.TryGetValue(_gridCell, out RoadGraphVertex _roadGraphVertex))
-            {
-                // 기존의 충돌 했던 정보를 이어 받기
-                roadGraphVertex.edge.left = _roadGraphVertex.edge.left;
-                roadGraphVertex.edge.right = _roadGraphVertex.edge.right;
-            }
-            Debug.Log(CountNearByRoads(roadGraphVertex));
+            // 기존의 충돌 했던 정보를 이어 받기
+
+
+            roadGraphVertex.edge.down = _roadGraphVertex.edge.down;
+            roadGraphVertex.edge.up = _roadGraphVertex.edge.up;
+            roadGraphVertex.edge.left = _roadGraphVertex.edge.left;
+            roadGraphVertex.edge.right = _roadGraphVertex.edge.right;
+            if (roadGraphVertex.edge.right == null)
+                Debug.Log(CountNearByRoads(roadGraphVertex));
 
         }
 
-        if (roadDrageDirection == RoadDirection.Direction_XPlus || roadDrageDirection == RoadDirection.Direction_XMinus)
-        {
-            
-            if (roadList.TryGetValue(_gridCell, out RoadGraphVertex _roadGraphVertex))
-            {
-                roadGraphVertex.edge.up = _roadGraphVertex.edge.up;
-                roadGraphVertex.edge.down = _roadGraphVertex.edge.down;
-            }
-        }
 
-        
+
+
     }
     private int CountNearByRoads(RoadGraphVertex _vertex)
     {
@@ -198,7 +192,7 @@ public class RoadGraph : MonoBehaviour
             int nearRoadsNum = CountNearByRoads(vertex);
             RoadType roadType = RoadType.RoadEnd;
             Quaternion rotateRotation = Quaternion.identity;
-
+            Debug.Log(nearRoadsNum);
             switch (nearRoadsNum)
             {
                 // 이웃한 도로가 없는 경우
@@ -238,33 +232,40 @@ public class RoadGraph : MonoBehaviour
                 case 2:
                     if (currentDragDirection == RoadDirection.Direction_XPlus || currentDragDirection == RoadDirection.Direction_XMinus)
                     {
+
                         // 두 도로가 같은 축을 연결 돼 있다. 그러면 스트레이트지
                         if (vertex.edge.right != null && vertex.edge.left != null)
                         {
-                            // 위 아래 도로가 접점이 있을때
-                            if (vertex.edge.up != null && vertex.edge.down != null)
-                            {
-                                roadType = RoadType.RoadFourWay;
-                            }
-                            // 위 혹은 아래 도로만 접점이 있을 때
-                            else if (vertex.edge.up == null && vertex.edge.down != null)
-                            {
-                                roadType = RoadType.RoadThreeWay;
-                            }
-                            else if (vertex.edge.up != null && vertex.edge.down == null)
-                            {
-                                roadType = RoadType.RoadThreeWay;
-                            }
-                            else
-                            {
-                                Debug.Log(nearRoadsNum);
-                                roadType = RoadType.RoadStraight;
-                            }
+
+                            roadType = RoadType.RoadStraight;
+
                         }
 
                         // 왼쪽 길이 살아 있을 때,
+                        else if (vertex.edge.right == null)
+                        {
+                            if (vertex.edge.up != null)
+                            {
+                                roadType = RoadType.RoadCorner;
+                                rotateRotation = Quaternion.Euler(0, 270, 0);
+                            }
+                            else
+                            {
+                                roadType = RoadType.RoadCorner;
+                                rotateRotation = Quaternion.Euler(0, 180, 0);
+                            }
+                        }
                         else
                         {
+                            if (vertex.edge.up != null)
+                            {
+                                roadType = RoadType.RoadCorner;
+                            }
+                            else
+                            {
+                                roadType = RoadType.RoadCorner;
+                                rotateRotation = Quaternion.Euler(0, 90, 0);
+                            }
                         }
                     }
                     else if (currentDragDirection == RoadDirection.Direction_ZPlus || currentDragDirection == RoadDirection.Direction_ZMinus)
@@ -276,37 +277,63 @@ public class RoadGraph : MonoBehaviour
                             rotateRotation = Quaternion.Euler(0, 90, 0);
                         }
 
-                        // 위쪽 길이 살아 있을 때,
+
                         else if (vertex.edge.down == null)
                         {
-
                             // 오른쪽으로 연결 된 코너
                             if (vertex.edge.right != null)
                             {
                                 roadType = RoadType.RoadCorner;
-
                             }
                             // 왼쪽으로 연결 된 코너
                             else
                             {
                                 roadType = RoadType.RoadCorner;
+                                rotateRotation = Quaternion.Euler(0, 270, 0);
                             }
                         }
-                        // 오른쪽 길이 살아 있을 때,
+                        // 아랫 길이 살아 있을 때,
                         else
                         {
                             // 오른쪽으로 연결 된 코너
                             if (vertex.edge.right != null)
                             {
                                 roadType = RoadType.RoadCorner;
+                                rotateRotation = Quaternion.Euler(0, 90, 0);
                             }
                             // 왼쪽으로 연결 된 코너
                             else
                             {
                                 roadType = RoadType.RoadCorner;
+                                rotateRotation = Quaternion.Euler(0, 180, 0);
                             }
                         }
                     }
+                    break;
+                case 3:
+                    roadType = RoadType.RoadThreeWay;
+
+                    if (vertex.edge.down == null)
+                    {
+                        rotateRotation = Quaternion.identity;
+                    }
+                    else if (vertex.edge.up == null)
+                    {
+                        rotateRotation = Quaternion.Euler(0, 180, 0);
+                    }
+                    else if (vertex.edge.left == null)
+                    {
+                        rotateRotation = Quaternion.Euler(0, 90, 0);
+                    }
+                    else if (vertex.edge.right == null)
+                    {
+                        rotateRotation = Quaternion.Euler(0, 270, 0);
+                    }
+
+
+                    break;
+                case 4:
+                    roadType = RoadType.RoadFourWay;
                     break;
             }
 

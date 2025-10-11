@@ -14,6 +14,7 @@ public class PreviewSystem : MonoBehaviour
 
 
 
+
     private void Start()
     {
         PreviewMaterialInstance = new Material(PreviewMaterialsPrefab);

@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class IsometricCameraHandler : MonoBehaviour
 {
-    [Header("Limit max cam position")]
-    [SerializeField]
     private Vector2 handlerLimitX;
-    [SerializeField]
     private Vector2 handlerLimitZ;
     [Space(10)]
     [Header("Speed")]
@@ -22,19 +19,29 @@ public class IsometricCameraHandler : MonoBehaviour
     [SerializeField]
     private float minZoom = 2;
     [SerializeField]
-    private float maxZoom = 40;
+    private float maxZoom = 200;
 
     private float currentZoom;
 
-    void Start()
+
+    void Awake()
     {
-       realCamera = GetComponentInChildren<Camera>();
+        realCamera = GetComponentInChildren<Camera>();
+        currentZoom = maxZoom;
+        realCamera.orthographicSize = currentZoom;
+    }
+
+    public void SetLimitHandlerSizeAndStartPosition(Vector2 limitHandlerX, Vector2 limitHandlerZ, Vector3 startPosition)
+    {
+        transform.position = new Vector3(startPosition.x, transform.position.y, startPosition.z);
+        handlerLimitX = limitHandlerX;
+        handlerLimitZ = limitHandlerZ;
     }
 
     void Update()
     {
         Vector2 camDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        transform.position += Quaternion.Euler(0,realCamera.transform.eulerAngles.y, 0)*new Vector3(camDirection.x, 0, camDirection.y) * (camSpeed * Time.deltaTime);
+        transform.position += Quaternion.Euler(0, realCamera.transform.eulerAngles.y, 0) * new Vector3(camDirection.x, 0, camDirection.y) * (camSpeed * Time.deltaTime);
 
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, handlerLimitX.x, handlerLimitX.y),
         transform.position.y, Mathf.Clamp(transform.position.z, handlerLimitZ.x, handlerLimitZ.y));

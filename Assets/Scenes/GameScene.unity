@@ -549,12 +549,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03cf439fb591a5244b0b9a998921e5f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RoadPrefab: {fileID: 3551935819373138510, guid: 99860a9c8e09b3f40a53c63833e516f9,
-    type: 3}
   RoadPrefabs:
   - {fileID: 3551935819373138510, guid: 99860a9c8e09b3f40a53c63833e516f9, type: 3}
   - {fileID: 5481819794239553694, guid: 5615ea664345be84d9b29b15a05f1f6c, type: 3}
-  - {fileID: 2056211624951461751, guid: 511f20f1045df424299b4ce608e861e8, type: 3}
+  - {fileID: 919132149155446097, guid: 4771917b497a16f4d86b7aa178ab7212, type: 3}
   - {fileID: 2157175793013477452, guid: 1cf967eac9f84a64195e5ace746ecd7e, type: 3}
   - {fileID: 5939487771492430345, guid: 0d25459c721406e43b79a7ebe95940a0, type: 3}
   roadGraph: {fileID: 543626472}
@@ -616,8 +614,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GroundPrefab: {fileID: 2377500316345855302}
-  height: 15
-  width: 15
+  height: 80
+  width: 80
   gridSpaceSize: 1
   gridCellPrefab: {fileID: 3959285608064541372, guid: ab34132470d8cb34f805e79ebb2ec986,
     type: 3}
@@ -658,7 +656,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.11992703, g: 0.26720467, b: 0.5188679, a: 1}
+  m_BackGroundColor: {r: 0.227451, g: 0.24705884, b: 0.33333334, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1845,12 +1843,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 489d09fcd7ef369408eb7dc523831dc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handlerLimitX: {x: -20, y: 20}
-  handlerLimitZ: {x: -20, y: 20}
-  zoomSpeed: 200
+  zoomSpeed: 300
   zoomSmoothness: 5
   minZoom: 2
-  maxZoom: 15
+  maxZoom: 50
 --- !u!1 &1860763785
 GameObject:
   m_ObjectHideFlags: 0
